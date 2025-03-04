@@ -1,0 +1,246 @@
+{
+    "idopont": [
+        {
+            "id": "1",
+            "szolgaltatas": "orvos",
+            "day": "hétfő",
+            "ora": 12
+        },
+        {
+            "id": "2",
+            "szolgaltatas": "orvos",
+            "day": "hétfő",
+            "ora": 14
+        },
+        {
+            "id": "3",
+            "szolgaltatas": "orvos",
+            "day": "kedd",
+            "ora": 9
+        },
+        {
+            "id": "4",
+            "szolgaltatas": "orvos",
+            "day": "kedd",
+            "ora": 10
+        },
+        {
+            "id": "5",
+            "szolgaltatas": "orvos",
+            "day": "szerda",
+            "ora": 11
+        },
+        {
+            "id": "6",
+            "szolgaltatas": "orvos",
+            "day": "csütörtök",
+            "ora": 13
+        },
+        {
+            "id": "7",
+            "szolgaltatas": "pszichológus",
+            "day": "hétfő",
+            "ora": 9
+        },
+        {
+            "id": "8",
+            "szolgaltatas": "pszichológus",
+            "day": "hétfő",
+            "ora": 15
+        },
+        {
+            "id": "9",
+            "szolgaltatas": "pszichológus",
+            "day": "kedd",
+            "ora": 8
+        },
+        {
+            "id": "10",
+            "szolgaltatas": "pszichológus",
+            "day": "kedd",
+            "ora": 16
+        },
+        {
+            "id": "11",
+            "szolgaltatas": "pszichológus",
+            "day": "szerda",
+            "ora": 10
+        },
+        {
+            "id": "12",
+            "szolgaltatas": "pszichológus",
+            "day": "csütörtök",
+            "ora": 12
+        },
+        {
+            "id": "13",
+            "szolgaltatas": "műkörmös",
+            "day": "hétfő",
+            "ora": 9
+        },
+        {
+            "id": "14",
+            "szolgaltatas": "műkörmös",
+            "day": "hétfő",
+            "ora": 11
+        },
+        {
+            "id": "15",
+            "szolgaltatas": "műkörmös",
+            "day": "kedd",
+            "ora": 14
+        },
+        {
+            "id": "16",
+            "szolgaltatas": "műkörmös",
+            "day": "szerda",
+            "ora": 12
+        },
+        {
+            "id": "17",
+            "szolgaltatas": "műkörmös",
+            "day": "csütörtök",
+            "ora": 10
+        },
+        {
+            "id": "18",
+            "szolgaltatas": "fodrász férfi",
+            "day": "hétfő",
+            "ora": 8
+        },
+        {
+            "id": "19",
+            "szolgaltatas": "fodrász férfi",
+            "day": "hétfő",
+            "ora": 14
+        },
+        {
+            "id": "20",
+            "szolgaltatas": "fodrász férfi",
+            "day": "kedd",
+            "ora": 13
+        },
+        {
+            "id": "21",
+            "szolgaltatas": "fodrász női",
+            "day": "kedd",
+            "ora": 15
+        },
+        {
+            "id": "22",
+            "szolgaltatas": "fodrász női",
+            "day": "szerda",
+            "ora": 9
+        },
+        {
+            "id": "23",
+            "szolgaltatas": "fodrász női",
+            "day": "csütörtök",
+            "ora": 12
+        },
+        {
+            "id": "24",
+            "szolgaltatas": "fodrász női",
+            "day": "péntek",
+            "ora": 8
+        },
+        {
+            "id": "25",
+            "szolgaltatas": "műszaki vizsga",
+            "day": "hétfő",
+            "ora": 16
+        },
+        {
+            "id": "26",
+            "szolgaltatas": "műszaki vizsga",
+            "day": "kedd",
+            "ora": 10
+        },
+        {
+            "id": "27",
+            "szolgaltatas": "műszaki vizsga",
+            "day": "szerda",
+            "ora": 11
+        },
+        {
+            "id": "28",
+            "szolgaltatas": "műszaki vizsga",
+            "day": "csütörtök",
+            "ora": 15
+        },
+        {
+            "id": "29",
+            "szolgaltatas": "tetováló",
+            "day": "hétfő",
+            "ora": 9
+        },
+        {
+            "id": "30",
+            "szolgaltatas": "tetováló",
+            "day": "hétfő",
+            "ora": 13
+        },
+        {
+            "id": "31",
+            "szolgaltatas": "tetováló",
+            "day": "kedd",
+            "ora": 14
+        },
+        {
+            "id": "32",
+            "szolgaltatas": "tetováló",
+            "day": "szerda",
+            "ora": 10
+        },
+        {
+            "id": "33",
+            "szolgaltatas": "tetováló",
+            "day": "csütörtök",
+            "ora": 16
+        },
+        {
+            "id": "34",
+            "szolgaltatas": "hivatali ügyintézés",
+            "day": "hétfő",
+            "ora": 8
+        },
+        {
+            "id": "35",
+            "szolgaltatas": "hivatali ügyintézés",
+            "day": "hétfő",
+            "ora": 15
+        },
+        {
+            "id": "36",
+            "szolgaltatas": "hivatali ügyintézés",
+            "day": "kedd",
+            "ora": 9
+        },
+        {
+            "id": "37",
+            "szolgaltatas": "hivatali ügyintézés",
+            "day": "kedd",
+            "ora": 13
+        },
+        {
+            "id": "38",
+            "szolgaltatas": "hivatali ügyintézés",
+            "day": "szerda",
+            "ora": 12
+        },
+        {
+            "id": "39",
+            "szolgaltatas": "hivatali ügyintézés",
+            "day": "csütörtök",
+            "ora": 10
+        },
+        {
+            "id": "40",
+            "szolgaltatas": "hivatali ügyintézés",
+            "day": "péntek",
+            "ora": 11
+        }
+    ]
+
+    
+}
