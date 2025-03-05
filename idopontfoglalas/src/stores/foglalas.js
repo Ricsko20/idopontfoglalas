@@ -18,24 +18,29 @@ export const useFoglalasStroe = defineStore('foglalas', () => {
         console.error('Hiba történt az időpontok betöltésekor:', error);
       });
   };
+
   const filterAvailableTimes = () => {
     if (!selectedService.value) return;
 
-    const startHour = 8;
-    const endHour = 16;
     availableTimes.value = [];
 
-    for (let hour = startHour; hour <= endHour; hour++) {
-      const time = `${hour}:00`;
+    const daysOfWeek = ["hétfő", "kedd", "szerda", "csütörtök", "péntek"];
 
-      const isBooked = appointments.value.some(appointment =>
-        appointment.service === selectedService.value && appointment.time === time
-      );
+    daysOfWeek.forEach(day => {
+      for (let hour = 8; hour <= 16; hour++) {
+        const timeSlot = `${hour}:00`;
 
-      if (!isBooked) {
-        availableTimes.value.push(time);
+        const isBooked = appointments.value.some(appointment => 
+          appointment.szolgaltatas === selectedService.value && 
+          appointment.day === day && 
+          appointment.ora === hour
+        );
+
+        if (!isBooked) {
+          availableTimes.value.push({ day, time: timeSlot });
+        }
       }
-    }
+    });
   };
 
   return { appointments, selectedService, availableTimes, loadAppointments, filterAvailableTimes };
