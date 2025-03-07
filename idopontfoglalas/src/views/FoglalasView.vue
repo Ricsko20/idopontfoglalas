@@ -1,102 +1,164 @@
 <template>
-  <div>
-    <h1>Időpontfoglalás</h1>
-    <div class="szolgcontainer">
-      <label id="l1" for="szolgaltatasok"><h4>Szolgáltatások: </h4></label>
-      <select name="szolgaltatok" id="szolgaltatok" v-model="selectedService" @change="loadAvailableTimes">
-        <option value="">Válassz egy szolgáltatást</option>
-        <option value="orvos">Orvos</option>
-        <option value="pszichológus">Pszichológus</option>
-        <option value="műkörmös">Műkörmös</option>
-        <option value="fodrász férfi">Férfi fodrász</option>
-        <option value="fodrász női">Női fodrász</option>
-        <option value="műszaki vizsga">Műszaki vizsga</option>
-        <option value="tetováló">Tetováló</option>
-        <option value="hivatali ügyintézés">Hivatali ügyintézés</option>
-      </select>
+  <div class="container mt-5">
+    <h1 class="text-center mb-4">Időpontfoglalás</h1>
+    
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="szolgaltatok"><h4>Szolgáltatások:</h4></label>
+          <select class="form-control" id="szolgaltatok" v-model="selectedService" @change="loadAvailableTimes">
+            <option value="">Válassz egy szolgáltatást</option>
+            <option value="orvos">Orvos</option>
+            <option value="pszichológus">Pszichológus</option>
+            <option value="műkörmös">Műkörmös</option>
+            <option value="fodrász férfi">Férfi fodrász</option>
+            <option value="fodrász női">Női fodrász</option>
+            <option value="műszaki vizsga">Műszaki vizsga</option>
+            <option value="tetováló">Tetováló</option>
+            <option value="hivatali ügyintézés">Hivatali ügyintézés</option>
+          </select>
+        </div>
+      </div>
+      
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="napok"><h4>Napok:</h4></label>
+          <select class="form-control" id="napok" v-model="selectedDay" @change="loadAvailableTimes" :disabled="!selectedService">
+            <option value="">Válassz egy napot</option>
+            <option v-for="day in daysOfWeek" :key="day" :value="day">{{ capitalizeFirstLetter(day) }}</option>
+          </select>
+        </div>
+      </div>
     </div>
 
     <div class="idopontcontainer">
       <label for="idopontok"><h4>Elérhető időpontok</h4></label>
-      <div v-if="availableTimes.length > 0">
-        <div v-for="(timeSlot, index) in availableTimes" :key="index" class="time-slot">
-          <button 
-            :disabled="isTimeSlotBooked(timeSlot)" 
-            @click="selectTime(timeSlot)"
-            :class="{ booked: isTimeSlotBooked(timeSlot) }">
-            {{ timeSlot.day }} - {{ timeSlot.time }}
-          </button>
-        </div>
-      </div>
-      <div v-else>
-        <p>Nincs elérhető időpont.</p>
-      </div>
+      <table class="table table-bordered mt-3">
+        <thead class="thead-light">
+          <tr>
+            <th scope="col">Nap</th>
+            <th scope="col">Idő</th>
+            <th scope="col">Állapot</th>
+            <th scope="col">Művelet</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-if="displayedTimeSlots.length > 0" v-for="(timeSlot, index) in displayedTimeSlots" :key="index">
+            <td>{{ capitalizeFirstLetter(timeSlot.day) }}</td>
+            <td>{{ timeSlot.time }}</td>
+            <td>
+              <span v-if="timeSlot.isBooked" class="text-danger">Foglalt</span>
+              <span v-else class="text-success">Szabad</span>
+            </td>
+            <td>
+              <button 
+                class="btn" 
+                :class="{
+                  'btn-success': !timeSlot.isBooked,
+                  'btn-danger': timeSlot.isBooked,
+                  'disabled': timeSlot.isBooked
+                }" 
+                @click="selectTime(timeSlot)"
+                :disabled="timeSlot.isBooked">
+                {{ timeSlot.isBooked ? 'Foglalva' : 'Kiválaszt' }}
+              </button>
+            </td>
+          </tr>
+          <tr v-else>
+            <td colspan="4" class="text-center">
+              <span v-if="!selectedService">Válassz egy szolgáltatást</span>
+              <span v-else-if="!selectedDay">Válassz egy napot</span>
+              <span v-else>Nincs elérhető időpont a kiválasztott napon és szolgáltatásnál.</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 import { useFoglalasStroe } from '@/stores/foglalas';
 
 const foglalo = useFoglalasStroe();
+const router = useRouter();
 
 const selectedService = ref('');
-const availableTimes = ref([]);
+const selectedDay = ref('');
+const daysOfWeek = ["hétfő", "kedd", "szerda", "csütörtök", "péntek"];
+const timeSlots = ref([]);
 
 onMounted(() => {
   foglalo.loadAppointments();
 });
 
 const loadAvailableTimes = () => {
+  if (!selectedService.value) {
+    timeSlots.value = [];
+    return;
+  }
+
   foglalo.selectedService = selectedService.value;
-  foglalo.filterAvailableTimes();
-  availableTimes.value = foglalo.availableTimes;
+  generateAllTimeSlots();
 };
 
-const isTimeSlotBooked = (timeSlot) => {
-  return foglalo.appointments.some(appointment =>
-    appointment.szolgaltatas === selectedService.value && 
-    appointment.day === timeSlot.day && 
-    appointment.ora === parseInt(timeSlot.time.split(':')[0])
-  );
+const generateAllTimeSlots = () => {
+  timeSlots.value = [];
+  daysOfWeek.forEach(day => {
+    for (let hour = 8; hour <= 16; hour++) {
+      const time = `${hour}:00`;
+      const isBooked = foglalo.appointments.some(appointment => 
+        appointment.szolgaltatas === selectedService.value && 
+        appointment.day === day && 
+        appointment.ora === hour
+      );
+      
+      timeSlots.value.push({
+        id: `${day}-${hour}`,
+        day: day,
+        time: time,
+        isBooked: isBooked
+      });
+    }
+  });
 };
+
+const displayedTimeSlots = computed(() => {
+  if (!selectedService.value || !timeSlots.value.length) {
+    return [];
+  }
+  
+  if (selectedDay.value) {
+    return timeSlots.value.filter(slot => slot.day === selectedDay.value);
+  }
+  
+  return timeSlots.value;
+});
 
 const selectTime = (timeSlot) => {
-  alert(`Kiválasztott időpont: ${timeSlot.day} - ${timeSlot.time}`);
+  if (!timeSlot.isBooked) {
+    foglalo.selectedTimeSlot = timeSlot;
+    router.push('/urlap');
+  }
+};
+
+const capitalizeFirstLetter = (string) => {
+  return string.charAt(0).toUpperCase() + string.slice(1);
 };
 </script>
 
 <style scoped>
-h1 {
-  text-align: center;
+.idopontcontainer {
   margin-top: 20px;
-  margin-bottom: 100px;
 }
 
-h4 {
-  margin-bottom: 30px;
+.table td {
+  vertical-align: middle;
 }
 
-#l1 {
-  font-size: 20px;
-}
-
-.time-slot button {
-  margin: 5px;
-  padding: 10px;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  cursor: pointer;
-}
-
-.time-slot button:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
-}
-
-.time-slot button.booked {
-  background-color: #f44336;
+.table .btn {
+  width: 100%;
 }
 </style>

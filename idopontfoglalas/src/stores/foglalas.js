@@ -5,14 +5,14 @@ import { defineStore } from 'pinia';
 export const useFoglalasStroe = defineStore('foglalas', () => {
   const appointments = ref([]);
   const selectedService = ref('');
+  const selectedDay = ref('');
   const availableTimes = ref([]);
+  const selectedTimeSlot = ref(null);
 
-  // Időpontok betöltése
   const loadAppointments = () => {
     axios.get('http://localhost:3000/idopont')
       .then(resp => {
         appointments.value = resp.data;
-        filterAvailableTimes();
       })
       .catch(error => {
         console.error('Hiba történt az időpontok betöltésekor:', error);
@@ -23,10 +23,11 @@ export const useFoglalasStroe = defineStore('foglalas', () => {
     if (!selectedService.value) return;
 
     availableTimes.value = [];
+    
+    // Get days to filter by
+    const daysToFilter = selectedDay.value ? [selectedDay.value] : ["hétfő", "kedd", "szerda", "csütörtök", "péntek"];
 
-    const daysOfWeek = ["hétfő", "kedd", "szerda", "csütörtök", "péntek"];
-
-    daysOfWeek.forEach(day => {
+    daysToFilter.forEach(day => {
       for (let hour = 8; hour <= 16; hour++) {
         const timeSlot = `${hour}:00`;
 
@@ -43,5 +44,13 @@ export const useFoglalasStroe = defineStore('foglalas', () => {
     });
   };
 
-  return { appointments, selectedService, availableTimes, loadAppointments, filterAvailableTimes };
+  return { 
+    appointments, 
+    selectedService, 
+    selectedDay,
+    availableTimes, 
+    selectedTimeSlot,
+    loadAppointments, 
+    filterAvailableTimes 
+  };
 });
